@@ -54,3 +54,14 @@ jobs:
         if: always()
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Notify Telegram
+        if: always()
+        run: |
+          curl -X POST \
+          "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+          -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+          -d text="✅ Playwright run finished
+
+          📊 Report:
+          ${{ steps.deployment.outputs.page_url }}"
